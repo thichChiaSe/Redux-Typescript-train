@@ -1,9 +1,7 @@
 import { all } from "redux-saga/effects";
 import counterSaga from "../features/counter/counterSaga";
-function* hello() {
-  console.log("hello");
-}
+import { provinceSaga } from "../features/counter/province/provinceSaga";
+
 export default function* rootSaga() {
-  console.log("saga");
-  yield all([hello(), counterSaga()]);
+  yield all([provinceSaga()]);
 }

@@ -1,0 +1,3 @@
+@baseUrl = http://js-post-api.herokuapp.com/api
+@name getAllcities 
+GET {{baseUrl}}/cities

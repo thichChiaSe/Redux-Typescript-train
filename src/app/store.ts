@@ -1,23 +1,25 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
 import createSagaMiddleware from "@redux-saga/core";
 import rootSaga from "./rootSaga";
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import provinceReducer from "../features/counter/province/provinceSlice";
+import { history } from "../util/history";
+
+const rootReducer = combineReducers({
+  router: connectRouter(history),
+  province: provinceReducer,
+});
 const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    // redux-thunk
-    // getDefaultMiddleware(),
-    //   {
-    //   thunk: true,
-    //   serializableCheck: false, //check state toàn bộ tree nếu phát hiện không chuyển hóa được (func, symbol, promise,...) báo lỗi
-    //   immutableCheck: false,
-    // }
-
-    //add redux-saga vào tool-kit
-    getDefaultMiddleware().concat(sagaMiddleware),
+    getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware(history)),
 });
 
 sagaMiddleware.run(rootSaga);
